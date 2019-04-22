@@ -3,14 +3,74 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
+#Accounts
+GET          /administration/accounts                 controllers.AccountsController.accounts
+POST         /administration/accounts/add             controllers.AccountsController.add
+POST         /administration/accounts/remove          controllers.AccountsController.remove
+PATCH        /administration/accounts/edit            controllers.AccountsController.edit
+
+#Categories
+GET          /administration/categories               controllers.CategoriesController.categories
+POST         /administration/categories/add           controllers.CategoriesController.add
+POST         /administration/categories/remove        controllers.CategoriesController.remove
+PATCH        /administration/categories/edit          controllers.CategoriesController.edit
+
+#Countries
+GET          /administration/countries                controllers.CountriesController.countries
+POST         /administration/countries/add            controllers.CountriesController.add
+POST         /administration/countries/remove         controllers.CountriesController.remove
+PATCH        /administration/countries/edit           controllers.CountriesController.edit
+
+#Producers
+GET          /administration/producers                controllers.ProducersController.producers
+POST         /administration/producers/add            controllers.ProducersController.add
+POST         /administration/producers/remove         controllers.ProducersController.remove
+PATCH        /administration/producers/edit           controllers.ProducersController.edit
+
+#Products
+#GET          /product/:id                             controllers.ProductsController.product(id: Int)
+GET          /products                                controllers.ProductsController.products
+#GET          /administration/product/:id              controllers.ProductsController.product(id: Int)
+GET          /administration/products                 controllers.ProductsController.products
+POST         /administration/products/add             controllers.ProductsController.add
+POST         /administration/products/remove          controllers.ProductsController.remove
+PATCH        /administration/products/edit            controllers.ProductsController.edit
+
+#Photos
+GET          /administration/photos                   controllers.PhotosController.photos
+POST         /administration/photos/add               controllers.PhotosController.add
+POST         /administration/photos/remove            controllers.PhotosController.remove
+PATCH        /administration/photos/edit              controllers.PhotosController.edit
+
+#Depot
+GET          /administration/depot                    controllers.DepotController.depot
+POST         /administration/depot/add                controllers.DepotController.add
+POST         /administration/depot/remove             controllers.DepotController.remove
+PATCH        /administration/depot/edit               controllers.DepotController.edit
+
+#Auth
+POST         /auth/login                              controllers.AuthController.login
+POST         /auth/register                           controllers.AuthController.register
+
+#Client
+GET          /client                                  controllers.ClientController.client
+PATCH        /client/edit                             controllers.ClientController.edit
+GET          /client/addresses                        controllers.ClientController.addresses
+#GET          /client/address/:id                      controllers.ClientController.addresses
+POST         /client/address/add                      controllers.ClientController.addressAdd
+POST         /client/address/remove                   controllers.ClientController.addressRemove
+PATCH        /client/address/edit                     controllers.ClientController.addressEdit
+GET          /client/orders                           controllers.ClientController.orders
+
+#Order
+POST         /order                                   controllers.OrderController.order
+
 # An example controller showing a sample home page
-GET     /                           controllers.HomeController.index
+GET          /                                        controllers.HomeController.index
 # An example controller showing how to use dependency injection
-GET     /count                      controllers.CountController.count
+GET          /count                                   controllers.CountController.count
 # An example controller showing how to write asynchronous code
-GET     /message                    controllers.AsyncController.message
+GET          /message                                 controllers.AsyncController.message
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
-
-      
+GET          /assets/*file                            controllers.Assets.versioned(path="/public", file: Asset)
