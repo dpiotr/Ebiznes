@@ -1,13 +1,29 @@
 package controllers
 
 import javax.inject._
+import models.{CategoryRepository, ClientRepository, OrderRepository}
+import play.api.libs.json.Json
 import play.api.mvc._
 
-@Singleton
-class ClientController @Inject()(cc: ControllerComponents) extends AbstractController(cc) {
+import scala.concurrent.ExecutionContext
 
-  def client = Action {
-    Ok(views.html.index("client"))
+@Singleton
+class ClientController @Inject()(clientRepo: ClientRepository, orderRepo: OrderRepository, cc: MessagesControllerComponents)(implicit ec: ExecutionContext) extends MessagesAbstractController(cc) {
+
+  def clients = Action.async { implicit request =>
+    clientRepo
+      .list()
+      .map { clients =>
+        Ok(Json.toJson(clients))
+      }
+  }
+
+  def client = Action.async { implicit request =>
+    clientRepo //Filter client
+      .list()
+      .map { clients =>
+        Ok(Json.toJson(clients))
+      }
   }
 
   def edit = Action {
@@ -30,7 +46,11 @@ class ClientController @Inject()(cc: ControllerComponents) extends AbstractContr
     Ok(views.html.index("client/address/remove"))
   }
 
-  def orders = Action {
-    Ok(views.html.index("client/orders"))
+  def orders = Action.async { implicit request =>
+    orderRepo
+      .list()
+      .map { orders =>
+        Ok(Json.toJson(orders))
+      }
   }
 }

@@ -1,13 +1,21 @@
 package controllers
 
 import javax.inject._
+import models.ProductRepository
+import play.api.libs.json.Json
 import play.api.mvc._
 
-@Singleton
-class ProductsController @Inject()(cc: ControllerComponents) extends AbstractController(cc) {
+import scala.concurrent.ExecutionContext
 
-  def products = Action {
-    Ok(views.html.index("administration/products"))
+@Singleton
+class ProductsController @Inject()(productRepo: ProductRepository, cc: MessagesControllerComponents)(implicit ec: ExecutionContext) extends MessagesAbstractController(cc) {
+
+  def products = Action.async { implicit request =>
+    productRepo
+      .list()
+      .map { products =>
+        Ok(Json.toJson(products))
+      }
   }
 
   def add = Action {

@@ -1,13 +1,21 @@
 package controllers
 
 import javax.inject._
+import models.AccountRepository
+import play.api.libs.json.Json
 import play.api.mvc._
 
-@Singleton
-class AccountsController @Inject()(cc: ControllerComponents) extends AbstractController(cc) {
+import scala.concurrent.ExecutionContext
 
-  def accounts = Action {
-    Ok(views.html.index("administration/accounts"))
+@Singleton
+class AccountsController @Inject()(accountRepo: AccountRepository, cc: MessagesControllerComponents)(implicit ec: ExecutionContext) extends MessagesAbstractController(cc) {
+
+  def accounts = Action.async { implicit request =>
+    accountRepo
+      .list()
+      .map { accounts =>
+        Ok(Json.toJson(accounts))
+      }
   }
 
   def add = Action {

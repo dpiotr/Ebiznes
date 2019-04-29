@@ -1,13 +1,21 @@
 package controllers
 
 import javax.inject._
+import models.ProducerRepository
 import play.api.mvc._
+import play.api.libs.json.Json
+
+import scala.concurrent.ExecutionContext
 
 @Singleton
-class ProducersController @Inject()(cc: ControllerComponents) extends AbstractController(cc) {
+class ProducersController @Inject()(producerRepo: ProducerRepository, cc: MessagesControllerComponents)(implicit ec: ExecutionContext) extends MessagesAbstractController(cc) {
 
-  def producers = Action {
-    Ok(views.html.index("administration/producers"))
+  def producers = Action.async { implicit request =>
+    producerRepo
+      .list()
+      .map { producers =>
+        Ok(Json.toJson(producers))
+      }
   }
 
   def add = Action {

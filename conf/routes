@@ -53,6 +53,7 @@ POST         /auth/login                              controllers.AuthController
 POST         /auth/register                           controllers.AuthController.register
 
 #Client
+GET          /administration/clients                  controllers.ClientController.clients
 GET          /client                                  controllers.ClientController.client
 PATCH        /client/edit                             controllers.ClientController.edit
 GET          /client/addresses                        controllers.ClientController.addresses
