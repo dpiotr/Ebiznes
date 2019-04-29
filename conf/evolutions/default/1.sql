@@ -1,49 +1,49 @@
 # --- !Ups
 
-CREATE TABLE "Producent"
+CREATE TABLE "Producer"
 (
-    "id"    integer not null primary key autoincrement,
-    "nazwa" varchar not null
+    "id"   integer not null primary key autoincrement,
+    "name" varchar not null
 );
 
-CREATE TABLE "Kategoria"
+CREATE TABLE "Category"
 (
-    "id"    integer not null primary key autoincrement,
-    "nazwa" varchar not null
+    "id"   integer not null primary key autoincrement,
+    "name" varchar not null
 );
 
-CREATE TABLE "Zdjecie"
+CREATE TABLE "Photo"
 (
-    "id"    integer not null primary key autoincrement,
-    "nazwa" varchar not null
+    "id"   integer not null primary key autoincrement,
+    "name" varchar not null
 );
 
-CREATE TABLE "Produkt"
+CREATE TABLE "Product"
 (
-    "id"            integer not null primary key autoincrement,
-    "id_producenta" integer not null,
-    "id_kategorii"  integer not null,
-    "nazwa"         varchar not null,
-    "opis"          varchar not null,
-    "cena"          double  not null,
-    "id_zdjecia"    integer not null,
-    foreign key ("id_producenta") references "Producent" ("id"),
-    foreign key ("id_kategorii") references "Kategoria" ("id"),
-    foreign key ("id_zdjecia") references "Zdjecie" ("id")
+    "id"          integer not null primary key autoincrement,
+    "id_producer" integer not null,
+    "id_category" integer not null,
+    "id_photo"    integer not null,
+    "name"        varchar not null,
+    "description" varchar not null,
+    "price"       double  not null,
+    foreign key ("id_producer") references "Producer" ("id"),
+    foreign key ("id_category") references "Category" ("id"),
+    foreign key ("id_photo") references "Photo" ("id")
 );
 
-CREATE TABLE "Magazyn"
+CREATE TABLE "Depot"
 (
-    "id_produktu" integer not null primary key autoincrement,
-    "ilosc"       integer not null,
-    foreign key ("id_produktu") references "Produkt" ("id")
+    "id_product" integer not null primary key autoincrement,
+    "quantity"   integer not null,
+    foreign key ("id_product") references "Product" ("id")
 );
 
-CREATE TABLE "Administator"
+CREATE TABLE "Administration"
 (
-    "id"    integer not null primary key autoincrement,
-    "login" varchar not null,
-    "haslo" varchar not null
+    "id"       integer not null primary key autoincrement,
+    "login"    varchar not null,
+    "password" varchar not null
 );
 
 CREATE TABLE "Country"
@@ -52,70 +52,70 @@ CREATE TABLE "Country"
     "name" varchar not null
 );
 
-CREATE TABLE "klient"
+CREATE TABLE "Client"
+(
+    "id"        integer not null primary key autoincrement,
+    "name"      varchar not null,
+    "surname"   varchar not null,
+    "email"     varchar not null,
+    "telephone" varchar not null
+);
+
+CREATE TABLE "Address"
 (
     "id"          integer not null primary key autoincrement,
-    "imie"        varchar not null,
-    "nazwisko"    varchar not null,
-    "email"       varchar not null,
-    "nr_telefonu" varchar not null
+    "id_country"  integer not null,
+    "id_client"   integer not null,
+    "name"        varchar not null,
+    "street"      varchar not null,
+    "city"        varchar not null,
+    "state"       varchar not null,
+    "postal_code" varchar not null,
+    foreign key ("id_country") references "Country" ("id"),
+    foreign key ("id_client") references "Client" ("id")
 );
 
-CREATE TABLE "adres"
+CREATE TABLE "Order"
 (
-    "id"          integer not null primary key autoincrement,
-    "nazwa"       varchar not null,
-    "ulica"       varchar not null,
-    "miejscowosc" varchar not null,
-    "wojewodztwo" varchar not null,
-    "kod"         varchar not null,
-    "id_kraju"    integer not null,
-    "id_klienta"  integer not null,
-    foreign key ("id_kraju") references "Country" ("id"),
-    foreign key ("id_klienta") references "Klient" ("id")
+    "id"         integer not null primary key autoincrement,
+    "id_client"  integer not null,
+    "id_address" integer not null,
+    "date"       date    not null,
+    "is_done"    integer not null,
+    foreign key ("id_client") references "Client" ("id"),
+    foreign key ("id_address") references "Address" ("id")
 );
 
-CREATE TABLE "zamowienie"
+CREATE TABLE "Order_Product"
 (
-    "id"            integer not null primary key autoincrement,
-    "id_klienta"    integer not null,
-    "id_adresu"     integer not null,
-    "data_zlozenia" date    not null,
-    "zrealizowane"  integer not null,
-    foreign key ("id_klienta") references "Klient" ("id"),
-    foreign key ("id_adresu") references "Adres" ("id")
-);
-
-CREATE TABLE "zamowienie_produkt"
-(
-    "id_zamowienia" integer not null,
-    "id_produktu"   integer not null,
-    "ilosc"         integer not null,
-    primary key ("id_zamowienia", "id_produktu"),
-    foreign key ("id_produktu") references "Produkt" ("id"),
-    foreign key ("id_zamowienia") references "Zamowienie" ("id")
+    "id_order"   integer not null,
+    "id_product" integer not null,
+    "quantity"   integer not null,
+    primary key ("id_order", "id_product"),
+    foreign key ("id_product") references "Product" ("id"),
+    foreign key ("id_order") references "Order" ("id")
 );
 
 # --- !Downs
 
-DROP TABLE IF EXISTS "zamowienie";
+DROP TABLE IF EXISTS "Order";
 
-DROP TABLE IF EXISTS "zamowienie_produkt";
+DROP TABLE IF EXISTS "Order_Product";
 
-DROP TABLE IF EXISTS "Adres";
+DROP TABLE IF EXISTS "Address";
 
 DROP TABLE IF EXISTS "Country";
 
-DROP TABLE IF EXISTS "Klient";
+DROP TABLE IF EXISTS "Client";
 
-DROP TABLE IF EXISTS "Magazyn";
+DROP TABLE IF EXISTS "Depot";
 
-DROP TABLE IF EXISTS "Administator";
+DROP TABLE IF EXISTS "Administration";
 
-DROP TABLE IF EXISTS "Produkt";
+DROP TABLE IF EXISTS "Product";
 
-DROP TABLE IF EXISTS "Kategoria";
+DROP TABLE IF EXISTS "Category";
 
-DROP TABLE IF EXISTS "Zdjecie";
+DROP TABLE IF EXISTS "Photo";
 
-DROP TABLE IF EXISTS "Producent";
+DROP TABLE IF EXISTS "Producer";
