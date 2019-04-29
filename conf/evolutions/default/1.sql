@@ -34,7 +34,7 @@ CREATE TABLE "Product"
 
 CREATE TABLE "Depot"
 (
-    "id_product" integer not null primary key autoincrement,
+    "id_product" integer not null primary key,
     "quantity"   integer not null,
     foreign key ("id_product") references "Product" ("id")
 );
