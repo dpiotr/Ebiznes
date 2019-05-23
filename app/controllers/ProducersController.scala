@@ -18,15 +18,31 @@ class ProducersController @Inject()(producerRepo: ProducerRepository, cc: Messag
       }
   }
 
-  def add = Action {
-    Ok(views.html.index("administration/producers/add"))
+  def add = Action.async { implicit request =>
+    val name = request.body.asJson.get("name").as[String]
+
+    producerRepo
+      .create(name)
+      .map { product =>
+        Ok(Json.toJson(product))
+      }
   }
 
-  def remove = Action {
-    Ok(views.html.index("administration/producers/remove"))
+  def remove(id: Int) = Action.async { implicit request =>
+    producerRepo
+      .remove(id)
+      .map { value =>
+        Ok(Json.toJson(value))
+      }
   }
 
-  def edit = Action {
-    Ok(views.html.index("administration/producers/edit"))
+  def edit(id: Int) = Action.async { implicit request =>
+    val name = request.body.asJson.get("name").as[String]
+
+    producerRepo
+      .edit(id, name)
+      .map { value =>
+        Ok(Json.toJson(value))
+      }
   }
 }

@@ -18,15 +18,31 @@ class CountriesController @Inject()(countryRepo: CountryRepository, cc: Messages
       }
   }
 
-  def add = Action {
-    Ok(views.html.index("administration/countries/add"))
+  def add = Action.async { implicit request =>
+    val name = request.body.asJson.get("name").as[String]
+
+    countryRepo
+      .create(name)
+      .map { product =>
+        Ok(Json.toJson(product))
+      }
   }
 
-  def remove = Action {
-    Ok(views.html.index("administration/countries/remove"))
+  def remove(id: Int) = Action.async { implicit request =>
+    countryRepo
+      .remove(id)
+      .map { value =>
+        Ok(Json.toJson(value))
+      }
   }
 
-  def edit = Action {
-    Ok(views.html.index("administration/countries/edit"))
+  def edit(id: Int) = Action.async { implicit request =>
+    val name = request.body.asJson.get("name").as[String]
+
+    countryRepo
+      .edit(id, name)
+      .map { value =>
+        Ok(Json.toJson(value))
+      }
   }
 }

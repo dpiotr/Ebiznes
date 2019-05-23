@@ -4,67 +4,71 @@
 # ~~~~
 
 #Accounts
-GET          /administration/accounts                 controllers.AccountsController.accounts
-POST         /administration/accounts/add             controllers.AccountsController.add
-POST         /administration/accounts/remove          controllers.AccountsController.remove
-PATCH        /administration/accounts/edit            controllers.AccountsController.edit
+GET           /administration/accounts                       controllers.AccountsController.accounts
+POST          /administration/accounts/add                   controllers.AccountsController.add
+DELETE        /administration/accounts/:id/remove            controllers.AccountsController.remove(id: Int)
+PATCH         /administration/accounts/:id/edit              controllers.AccountsController.edit(id: Int)
 
 #Categories
-GET          /administration/categories               controllers.CategoriesController.categories
-POST         /administration/categories/add           controllers.CategoriesController.add
-POST         /administration/categories/remove        controllers.CategoriesController.remove
-PATCH        /administration/categories/edit          controllers.CategoriesController.edit
+GET           /categories                                    controllers.CategoriesController.categories
+GET           /administration/categories                     controllers.CategoriesController.categories
+POST          /administration/categories/add                 controllers.CategoriesController.add
+DELETE        /administration/categories/:id/remove          controllers.CategoriesController.remove(id: Int)
+PATCH         /administration/categories/:id/edit            controllers.CategoriesController.edit(id: Int)
 
 #Countries
-GET          /administration/countries                controllers.CountriesController.countries
-POST         /administration/countries/add            controllers.CountriesController.add
-POST         /administration/countries/remove         controllers.CountriesController.remove
-PATCH        /administration/countries/edit           controllers.CountriesController.edit
+GET           /countries                                     controllers.CountriesController.countries
+GET           /administration/countries                      controllers.CountriesController.countries
+POST          /administration/countries/add                  controllers.CountriesController.add
+DELETE        /administration/countries/:id/remove           controllers.CountriesController.remove(id: Int)
+PATCH         /administration/countries/:id/edit             controllers.CountriesController.edit(id: Int)
 
 #Producers
-GET          /administration/producers                controllers.ProducersController.producers
-POST         /administration/producers/add            controllers.ProducersController.add
-POST         /administration/producers/remove         controllers.ProducersController.remove
-PATCH        /administration/producers/edit           controllers.ProducersController.edit
+GET           /producers                                     controllers.ProducersController.producers
+GET           /administration/producers                      controllers.ProducersController.producers
+POST          /administration/producers/add                  controllers.ProducersController.add
+DELETE        /administration/producers/:id/remove           controllers.ProducersController.remove(id: Int)
+PATCH         /administration/producers/:id/edit             controllers.ProducersController.edit(id: Int)
 
 #Products
-#GET          /product/:id                             controllers.ProductsController.product(id: Int)
-GET          /products                                controllers.ProductsController.products
-#GET          /administration/product/:id              controllers.ProductsController.product(id: Int)
-GET          /administration/products                 controllers.ProductsController.products
-POST         /administration/products/add             controllers.ProductsController.add
-POST         /administration/products/remove          controllers.ProductsController.remove
-PATCH        /administration/products/edit            controllers.ProductsController.edit
+GET           /products                                      controllers.ProductsController.products
+GET           /products/:id                                  controllers.ProductsController.product(id: Int)
+GET           /administration/products                       controllers.ProductsController.products
+POST          /administration/products/add                   controllers.ProductsController.add
+DELETE        /administration/products/:id/remove            controllers.ProductsController.remove(id: Int)
+PATCH         /administration/products/:id/edit              controllers.ProductsController.edit(id: Int)
 
 #Photos
-GET          /administration/photos                   controllers.PhotosController.photos
-POST         /administration/photos/add               controllers.PhotosController.add
-POST         /administration/photos/remove            controllers.PhotosController.remove
-PATCH        /administration/photos/edit              controllers.PhotosController.edit
+GET           /photos                                        controllers.PhotosController.photos
+GET           /administration/photos                         controllers.PhotosController.photos
+POST          /administration/photos/add                     controllers.PhotosController.add
+DELETE        /administration/photos/:id/remove              controllers.PhotosController.remove(id: Int)
+PATCH         /administration/photos/:id/edit                controllers.PhotosController.edit(id: Int)
 
 #Depot
-GET          /administration/depot                    controllers.DepotController.depot
-POST         /administration/depot/add                controllers.DepotController.add
-POST         /administration/depot/remove             controllers.DepotController.remove
-PATCH        /administration/depot/edit               controllers.DepotController.edit
+GET           /administration/depot                          controllers.DepotController.depot
+POST          /administration/depot/add                      controllers.DepotController.add
+DELETE        /administration/depot/:id/remove               controllers.DepotController.remove(id: Int)
+PATCH         /administration/depot/:id/edit                 controllers.DepotController.edit(id: Int)
 
 #Auth
-POST         /auth/login                              controllers.AuthController.login
-POST         /auth/register                           controllers.AuthController.register
+POST          /auth/login                                    controllers.AuthController.login
+POST          /auth/register                                 controllers.AuthController.register
 
 #Client
-GET          /administration/clients                  controllers.ClientController.clients
-GET          /client                                  controllers.ClientController.client
-PATCH        /client/edit                             controllers.ClientController.edit
-GET          /client/addresses                        controllers.ClientController.addresses
-#GET          /client/address/:id                      controllers.ClientController.addresses
-POST         /client/address/add                      controllers.ClientController.addressAdd
-POST         /client/address/remove                   controllers.ClientController.addressRemove
-PATCH        /client/address/edit                     controllers.ClientController.addressEdit
-GET          /client/orders                           controllers.ClientController.orders
+GET           /client                                        controllers.ClientController.client
+PATCH         /client/:id/edit                               controllers.ClientController.edit(id: Int)
+GET           /client/:id/addresses                          controllers.ClientController.addresses(id: Int)
+POST          /client/:id/addresses/add                      controllers.ClientController.addressAdd(id: Int)
+DELETE        /client/:id/addresses/:addressId/remove        controllers.ClientController.addressRemove(id: Int, addressId: Int)
+PATCH         /client/id:/addresses/:addressId/edit          controllers.ClientController.addressEdit(id: Int, addressId: Int)
+GET           /client/:id/orders                             controllers.ClientController.orders(id: Int)
+GET           /administration/clients                        controllers.ClientController.clients
+DELETE        /administration/clients/:id/remove             controllers.ClientController.clients
+PATCH         /administration/clients/:id/edit               controllers.ClientController.clients
 
 #Order
-POST         /order                                   controllers.OrderController.order
+POST          /order                                         controllers.OrderController.order
 
 # Map static resources from the /public folder to the /assets URL path
-GET          /assets/*file                            controllers.Assets.versioned(path="/public", file: Asset)
+GET           /assets/*file                                  controllers.Assets.versioned(path="/public", file: Asset)

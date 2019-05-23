@@ -18,15 +18,31 @@ class PhotosController @Inject()(photoRepo: PhotoRepository, cc: MessagesControl
       }
   }
 
-  def add = Action {
-    Ok(views.html.index("administration/photos/add"))
+  def add = Action.async { implicit request =>
+    val name = request.body.asJson.get("name").as[String]
+
+    photoRepo
+      .create(name)
+      .map { product =>
+        Ok(Json.toJson(product))
+      }
   }
 
-  def remove = Action {
-    Ok(views.html.index("administration/photos/remove"))
+  def remove(id: Int) = Action.async { implicit request =>
+    photoRepo
+      .remove(id)
+      .map { value =>
+        Ok(Json.toJson(value))
+      }
   }
 
-  def edit = Action {
-    Ok(views.html.index("administration/photos/edit"))
+  def edit(id: Int) = Action.async { implicit request =>
+    val name = request.body.asJson.get("name").as[String]
+
+    photoRepo
+      .edit(id, name)
+      .map { value =>
+        Ok(Json.toJson(value))
+      }
   }
 }

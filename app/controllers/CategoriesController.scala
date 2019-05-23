@@ -18,15 +18,31 @@ class CategoriesController @Inject()(categoryRepo: CategoryRepository, cc: Messa
       }
   }
 
-  def add = Action {
-    Ok(views.html.index("administration/categories/add"))
+  def add = Action.async { implicit request =>
+    val name = request.body.asJson.get("name").as[String]
+
+    categoryRepo
+      .create(name)
+      .map { product =>
+        Ok(Json.toJson(product))
+      }
   }
 
-  def remove = Action {
-    Ok(views.html.index("administration/categories/remove"))
+  def remove(id: Int) = Action.async { implicit request =>
+    categoryRepo
+      .remove(id)
+      .map { value =>
+        Ok(Json.toJson(value))
+      }
   }
 
-  def edit = Action {
-    Ok(views.html.index("administration/categories/edit"))
+  def edit(id: Int) = Action.async { implicit request =>
+    val name = request.body.asJson.get("name").as[String]
+
+    categoryRepo
+      .edit(id, name)
+      .map { value =>
+        Ok(Json.toJson(value))
+      }
   }
 }

@@ -18,15 +18,33 @@ class DepotController @Inject()(depotRepo: DepotRepository, cc: MessagesControll
       }
   }
 
-  def add = Action {
-    Ok(views.html.index("administration/depot/add"))
+  def add = Action.async { implicit request =>
+    val id_product = request.body.asJson.get("id_product").as[Int]
+    val quantity = request.body.asJson.get("quantity").as[Int]
+
+    depotRepo
+      .create(id_product, quantity)
+      .map { product =>
+        Ok(Json.toJson(product))
+      }
   }
 
-  def remove = Action {
-    Ok(views.html.index("administration/depot/remove"))
+  def remove(id: Int) = Action.async { implicit request =>
+    depotRepo
+      .remove(id)
+      .map { value =>
+        Ok(Json.toJson(value))
+      }
   }
 
-  def edit = Action {
-    Ok(views.html.index("administration/depot/edit"))
+  def edit(id: Int) = Action.async { implicit request =>
+    val id_product = request.body.asJson.get("id_product").as[Int]
+    val quantity = request.body.asJson.get("quantity").as[Int]
+
+    depotRepo
+      .edit(id, id_product, quantity)
+      .map { value =>
+        Ok(Json.toJson(value))
+      }
   }
 }

@@ -1,11 +1,11 @@
 package controllers
 
 import javax.inject._
-import models.AccountRepository
+import models._
 import play.api.libs.json.Json
 import play.api.mvc._
 
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext}
 
 @Singleton
 class AccountsController @Inject()(accountRepo: AccountRepository, cc: MessagesControllerComponents)(implicit ec: ExecutionContext) extends MessagesAbstractController(cc) {
@@ -18,15 +18,33 @@ class AccountsController @Inject()(accountRepo: AccountRepository, cc: MessagesC
       }
   }
 
-  def add = Action {
-    Ok(views.html.index("administration/accounts/add"))
+  def add = Action.async { implicit request =>
+    val login = request.body.asJson.get("login").as[String]
+    val password = request.body.asJson.get("password").as[String]
+
+    accountRepo
+      .create(login, password)
+      .map { product =>
+        Ok(Json.toJson(product))
+      }
   }
 
-  def remove = Action {
-    Ok(views.html.index("administration/accounts/remove"))
+  def remove(id: Int) = Action.async { implicit request =>
+    accountRepo
+      .remove(id)
+      .map { value =>
+        Ok(Json.toJson(value))
+      }
   }
 
-  def edit = Action {
-    Ok(views.html.index("administration/accounts/edit"))
+  def edit(id: Int) = Action.async { implicit request =>
+    val login = request.body.asJson.get("login").as[String]
+    val password = request.body.asJson.get("password").as[String]
+
+    accountRepo
+      .edit(id, login, password)
+      .map { value =>
+        Ok(Json.toJson(value))
+      }
   }
 }
