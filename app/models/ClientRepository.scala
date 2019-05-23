@@ -41,6 +41,12 @@ class ClientRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(impli
       .result
   }
 
+  def getById(id: Int): Future[Seq[Client]] = db.run {
+    client
+      .filter(_.id === id)
+      .result
+  }
+
   def remove(id: Int) = db.run {
     client
       .filter(_.id === id)

@@ -66,12 +66,27 @@ class ProductsController @Inject()(productRepo: ProductRepository, cc: MessagesC
     )
   }
 
-  def remove = Action {
-    Ok(views.html.index("administration/products/remove"))
+  def remove(id: Int) = Action.async { implicit request =>
+    productRepo
+      .remove(id)
+      .map { value =>
+        Ok(Json.toJson(value))
+      }
   }
 
-  def edit = Action {
-    Ok(views.html.index("administration/products/edit"))
+  def edit(id: Int) = Action.async { implicit request =>
+    val id_producer = request.body.asJson.get("id_producer").as[Int]
+    val id_category = request.body.asJson.get("id_category").as[Int]
+    val id_photo = request.body.asJson.get("id_photo").as[Int]
+    val name = request.body.asJson.get("name").as[String]
+    val description = request.body.asJson.get("description").as[String]
+    val price = request.body.asJson.get("price").as[Int]
+
+    productRepo
+      .edit(id, id_producer, id_category, id_photo, name, description, price)
+      .map { value =>
+        Ok(Json.toJson(value))
+      }
   }
 
   def handlePost = Action.async { implicit request =>
@@ -90,4 +105,5 @@ class ProductsController @Inject()(productRepo: ProductRepository, cc: MessagesC
   }
 
   case class CreateProductForm(id_producer: Int, id_category: Int, id_photo: Int, name: String, description: String, price: Int)
+
 }

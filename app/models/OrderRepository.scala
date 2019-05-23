@@ -39,6 +39,12 @@ class OrderRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(implic
       .result
   }
 
+  def getByClientId(clientId: Int): Future[Seq[Order]] = db.run {
+    order
+      .filter(_.id_client === clientId)
+      .result
+  }
+
   def remove(id: Int) = db.run {
     order
       .filter(_.id === id)

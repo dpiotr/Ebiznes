@@ -48,6 +48,12 @@ class AddressRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(impl
       .result
   }
 
+  def getByClientId(id: Int): Future[Seq[Address]] = db.run {
+    address
+      .filter(_.id_client === id)
+      .result
+  }
+
   def remove(id: Int) = db.run {
     address
       .filter(_.id === id)

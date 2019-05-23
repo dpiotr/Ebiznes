@@ -56,16 +56,16 @@ POST          /auth/login                                    controllers.AuthCon
 POST          /auth/register                                 controllers.AuthController.register
 
 #Client
-GET           /client                                        controllers.ClientController.client
+GET           /client/:id                                    controllers.ClientController.client(id: Int)
 PATCH         /client/:id/edit                               controllers.ClientController.edit(id: Int)
 GET           /client/:id/addresses                          controllers.ClientController.addresses(id: Int)
 POST          /client/:id/addresses/add                      controllers.ClientController.addressAdd(id: Int)
 DELETE        /client/:id/addresses/:addressId/remove        controllers.ClientController.addressRemove(id: Int, addressId: Int)
-PATCH         /client/id:/addresses/:addressId/edit          controllers.ClientController.addressEdit(id: Int, addressId: Int)
+PATCH         /client/:id/addresses/:addressId/edit          controllers.ClientController.addressEdit(id: Int, addressId: Int)
 GET           /client/:id/orders                             controllers.ClientController.orders(id: Int)
-GET           /administration/clients                        controllers.ClientController.clients
-DELETE        /administration/clients/:id/remove             controllers.ClientController.clients
-PATCH         /administration/clients/:id/edit               controllers.ClientController.clients
+#GET           /administration/clients                        controllers.ClientController.clients
+#DELETE        /administration/clients/:id/remove             controllers.ClientController.clients
+#PATCH         /administration/clients/:id/edit               controllers.ClientController.clients
 
 #Order
 POST          /order                                         controllers.OrderController.order
