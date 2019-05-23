@@ -23,7 +23,29 @@ class CategoryRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(imp
 
   val category = TableQuery[CategoryTable]
 
+  def create(name: String): Future[Category] = db.run {
+    (category.map(c => (c.name))
+      returning category.map(_.id)
+      into { case ((name), id) => Category(id, name) }
+      ) += (name)
+  }
+
   def list(): Future[Seq[Category]] = db.run {
-    category.result
+    category
+      .result
+  }
+
+  def remove(id: Int) = db.run {
+    category
+      .filter(_.id === id)
+      .delete
+  }
+
+  def edit(id: Int, name: String) = db.run {
+    val updateCategory = Category(id, name)
+
+    category
+      .filter(_.id === id)
+      .update(updateCategory)
   }
 }

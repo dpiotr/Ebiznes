@@ -27,7 +27,29 @@ class OrderRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(implic
 
   val order = TableQuery[OrderTable]
 
+  def create(id_client: Int, id_address: Int, is_done: Int): Future[Order] = db.run {
+    (order.map(o => (o.id_client, o.id_address, o.is_done))
+      returning order.map(_.id)
+      into { case ((id_client, id_address, is_done), id) => Order(id, id_client, id_address, is_done) }
+      ) += (id_client, id_address, is_done)
+  }
+
   def list(): Future[Seq[Order]] = db.run {
-    order.result
+    order
+      .result
+  }
+
+  def remove(id: Int) = db.run {
+    order
+      .filter(_.id === id)
+      .delete
+  }
+
+  def edit(id: Int, id_client: Int, id_address: Int, is_done: Int) = db.run {
+    val updateOrder = Order(id, id_client, id_address, is_done)
+
+    order
+      .filter(_.id === id)
+      .update(updateOrder)
   }
 }

@@ -23,7 +23,28 @@ class CountryRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(impl
 
   val country = TableQuery[CountryTable]
 
+  def create(name: String): Future[Country] = db.run {
+    (country.map(c => (c.name))
+      returning country.map(_.id)
+      into { case ((name), id) => Country(id, name) }
+      ) += (name)
+  }
+
   def list(): Future[Seq[Country]] = db.run {
     country.result
+  }
+
+  def remove(id: Int) = db.run {
+    country
+      .filter(_.id === id)
+      .delete
+  }
+
+  def edit(id: Int, name: String) = db.run {
+    val updateCountry = Country(id, name)
+
+    country
+      .filter(_.id === id)
+      .update(updateCountry)
   }
 }

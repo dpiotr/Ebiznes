@@ -13,7 +13,7 @@ class AccountRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(impl
   import dbConfig._
   import profile.api._
 
-  class AdministrationTable(tag: Tag) extends Table[Account](tag, "Administration") {
+  class AccountsTable(tag: Tag) extends Table[Account](tag, "Accounts") {
     def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
 
     def login = column[String]("login")
@@ -23,9 +23,31 @@ class AccountRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(impl
     def * = (id, login, password) <> ((Account.apply _).tupled, Account.unapply)
   }
 
-  val account = TableQuery[AdministrationTable]
+  val account = TableQuery[AccountsTable]
+
+  def create(login: String, password: String): Future[Account] = db.run {
+    (account.map(a => (a.login, a.password))
+      returning account.map(_.id)
+      into { case ((login, password), id) => Account(id, login, password) }
+      ) += (login, password)
+  }
 
   def list(): Future[Seq[Account]] = db.run {
-    account.result
+    account
+      .result
+  }
+
+  def remove(id: Int) = db.run {
+    account
+      .filter(_.id === id)
+      .delete
+  }
+
+  def edit(id: Int, login: String, password: String) = db.run {
+    val updateAccount = Account(id, login, password)
+
+    account
+      .filter(_.id === id)
+      .update(updateAccount)
   }
 }

@@ -26,14 +26,42 @@ class ProductRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(impl
 
     def description = column[String]("description")
 
-    def price = column[Double]("price")
+    def price = column[Int]("price")
 
     def * = (id, id_producer, id_category, id_photo, name, description, price) <> ((Product.apply _).tupled, Product.unapply)
   }
 
   val product = TableQuery[ProductTable]
 
+  def create(id_producer: Int, id_category: Int, id_photo: Int, name: String, description: String, price: Double): Future[Product] = db.run {
+    (product.map(p => (p.id_producer, p.id_category, p.id_photo, p.name, p.description, p.price))
+      returning product.map(_.id)
+      into { case ((id_producer, id_category, id_photo, name, description, price), id) => Product(id, id_producer, id_category, id_photo, name, description, price) }
+      ) += (id_producer, id_category, id_photo, name, description, price.toInt)
+  }
+
   def list(): Future[Seq[Product]] = db.run {
-    product.result
+    product
+      .result
+  }
+
+  def getById(id: Int): Future[Seq[Product]] = db.run {
+    product
+      .filter(_.id === id)
+      .result
+  }
+
+  def remove(id: Int) = db.run {
+    product
+      .filter(_.id === id)
+      .delete
+  }
+
+  def edit(id: Int, id_producer: Int, id_category: Int, id_photo: Int, name: String, description: String, price: Int) = db.run {
+    val updateProduct = Product(id, id_producer, id_category, id_photo, name, description, price)
+
+    product
+      .filter(_.id === id)
+      .update(updateProduct)
   }
 }

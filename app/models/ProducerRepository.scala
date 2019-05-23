@@ -23,7 +23,28 @@ class ProducerRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(imp
 
   val producer = TableQuery[ProducerTable]
 
+  def create(name: String): Future[Producer] = db.run {
+    (producer.map(p => (p.name))
+      returning producer.map(_.id)
+      into { case ((name), id) => Producer(id, name) }
+      ) += (name)
+  }
+
   def list(): Future[Seq[Producer]] = db.run {
     producer.result
+  }
+
+  def remove(id: Int) = db.run {
+    producer
+      .filter(_.id === id)
+      .delete
+  }
+
+  def edit(id: Int, name: String) = db.run {
+    val updateProducer = Producer(id, name)
+
+    producer
+      .filter(_.id === id)
+      .update(updateProducer)
   }
 }

@@ -9,7 +9,7 @@ case class Product(
                     id_photo: Int,
                     name: String,
                     description: String,
-                    price: Double
+                    price: Int
                   )
 
 object Product {
