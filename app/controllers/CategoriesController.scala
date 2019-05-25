@@ -3,7 +3,7 @@ package controllers
 import javax.inject._
 import models.CategoryRepository
 import play.api.mvc._
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 
 import scala.concurrent.ExecutionContext
 
@@ -19,7 +19,9 @@ class CategoriesController @Inject()(categoryRepo: CategoryRepository, cc: Messa
   }
 
   def add = Action.async { implicit request =>
-    val name = request.body.asJson.get("name").as[String]
+    val category: JsObject = request.body.asJson.get("category").as[JsObject]
+
+    val name = category.value("name").as[String]
 
     categoryRepo
       .create(name)

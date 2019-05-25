@@ -3,7 +3,7 @@ package controllers
 import javax.inject._
 import models._
 import play.api.mvc._
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 
 import scala.concurrent.ExecutionContext
 
@@ -19,7 +19,9 @@ class CountriesController @Inject()(countryRepo: CountryRepository, cc: Messages
   }
 
   def add = Action.async { implicit request =>
-    val name = request.body.asJson.get("name").as[String]
+    val country: JsObject = request.body.asJson.get("country").as[JsObject]
+
+    val name = country.value("name").as[String]
 
     countryRepo
       .create(name)

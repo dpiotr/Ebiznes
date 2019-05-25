@@ -3,7 +3,7 @@ package controllers
 import javax.inject._
 import models.ProducerRepository
 import play.api.mvc._
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 
 import scala.concurrent.ExecutionContext
 
@@ -19,7 +19,9 @@ class ProducersController @Inject()(producerRepo: ProducerRepository, cc: Messag
   }
 
   def add = Action.async { implicit request =>
-    val name = request.body.asJson.get("name").as[String]
+    val producer: JsObject = request.body.asJson.get("producer").as[JsObject]
+
+    val name = producer.value("name").as[String]
 
     producerRepo
       .create(name)
