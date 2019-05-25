@@ -7,7 +7,8 @@ import slick.jdbc.JdbcProfile
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class OrderRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(implicit ec: ExecutionContext) {
+class OrderRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, val clientRepository: ClientRepository,
+                                val addressRepository: AddressRepository)(implicit ec: ExecutionContext) {
   val dbConfig = dbConfigProvider.get[JdbcProfile]
 
   import dbConfig._
@@ -22,8 +23,18 @@ class OrderRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(implic
 
     def is_done = column[Int]("is_done")
 
+    def fk_client = foreignKey("fk_client", id_client, clientTable)(_.id)
+
+    def fk_address = foreignKey("fk_address", id_address, addressTable)(_.id)
+
     def * = (id, id_client, id_address, is_done) <> ((Order.apply _).tupled, Order.unapply)
   }
+
+  import clientRepository.ClientTable
+  import addressRepository.AddressTable
+
+  val clientTable = TableQuery[ClientTable]
+  val addressTable = TableQuery[AddressTable]
 
   val order = TableQuery[OrderTable]
 

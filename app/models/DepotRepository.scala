@@ -7,7 +7,8 @@ import slick.jdbc.JdbcProfile
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class DepotRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(implicit ec: ExecutionContext) {
+class DepotRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, val productRepository: ProductRepository)
+                               (implicit ec: ExecutionContext) {
   val dbConfig = dbConfigProvider.get[JdbcProfile]
 
   import dbConfig._
@@ -20,8 +21,14 @@ class DepotRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(implic
 
     def quantity = column[Int]("quantity")
 
+    def fk_product = foreignKey("fk_product", id_product, productTable)(_.id)
+
     def * = (id, id_product, quantity) <> ((Depot.apply _).tupled, Depot.unapply)
   }
+
+  import productRepository.ProductTable
+
+  val productTable = TableQuery[ProductTable]
 
   val depot = TableQuery[DepotTable]
 

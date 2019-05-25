@@ -7,7 +7,9 @@ import slick.jdbc.JdbcProfile
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class ProductRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(implicit ec: ExecutionContext) {
+class ProductRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, val producerRepository: ProducerRepository,
+                                  val categoryRepository: CategoryRepository, val photoRepository: PhotoRepository)
+                                 (implicit ec: ExecutionContext) {
   val dbConfig = dbConfigProvider.get[JdbcProfile]
 
   import dbConfig._
@@ -28,8 +30,22 @@ class ProductRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(impl
 
     def price = column[Int]("price")
 
+    def fk_producer = foreignKey("fk_producer", id_producer, producerTable)(_.id)
+
+    def fk_category = foreignKey("fk_category", id_category, categoryTable)(_.id)
+
+    def fk_photo = foreignKey("fk_photo", id_photo, photoTable)(_.id)
+
     def * = (id, id_producer, id_category, id_photo, name, description, price) <> ((Product.apply _).tupled, Product.unapply)
   }
+
+  import producerRepository.ProducerTable
+  import categoryRepository.CategoryTable
+  import photoRepository.PhotoTable
+
+  val producerTable = TableQuery[ProducerTable]
+  val categoryTable = TableQuery[CategoryTable]
+  val photoTable = TableQuery[PhotoTable]
 
   val product = TableQuery[ProductTable]
 

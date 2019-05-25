@@ -7,7 +7,8 @@ import slick.jdbc.JdbcProfile
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class AddressRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(implicit ec: ExecutionContext) {
+class AddressRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, val countryRepository: CountryRepository,
+                                  val clientRepository: ClientRepository)(implicit ec: ExecutionContext) {
   val dbConfig = dbConfigProvider.get[JdbcProfile]
 
   import dbConfig._
@@ -30,8 +31,18 @@ class AddressRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(impl
 
     def postal_code = column[String]("postal_code")
 
+    def fk_country = foreignKey("fk_country", id_country, countryTable)(_.id)
+
+    def fk_client = foreignKey("fk_client", id_client, clientTable)(_.id)
+
     def * = (id, id_country, id_client, name, street, city, state, postal_code) <> ((Address.apply _).tupled, Address.unapply)
   }
+
+  import countryRepository.CountryTable
+  import clientRepository.ClientTable
+
+  val countryTable = TableQuery[CountryTable]
+  val clientTable = TableQuery[ClientTable]
 
   val address = TableQuery[AddressTable]
 
