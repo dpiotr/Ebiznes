@@ -52,7 +52,7 @@ export class ProductsList extends Component {
         for (let i = 0; i < this.state.products.length; i++) {
             let product = this.state.products[i];
 
-            productsList.push(<li id={product.id}>{product.name}</li>)
+            productsList.push(<li id={product.id}><a href={"/products/" + product.id}>{product.name}</a></li>)
         }
         return productsList
     }

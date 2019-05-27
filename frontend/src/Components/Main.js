@@ -11,6 +11,7 @@ export const Main = props => {
                 <ul>
                     <li><NavLink to="/">Main</NavLink></li>
                     <li><NavLink to="/products">Products</NavLink></li>
+                    <li><NavLink to="/products/add">Add Product</NavLink></li>
                     <li><NavLink to="/categories">Categories</NavLink></li>
                     <li><NavLink to="/categories/add">Add Category</NavLink></li>
                     <li><NavLink to="/producers">Producers</NavLink></li>

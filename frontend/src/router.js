@@ -2,6 +2,8 @@ import React from 'react';
 import {Route} from 'react-router-dom';
 import {Main} from './Components/Main';
 import {ProductsList} from './Components/ProductsList';
+import {ProductDetails} from './Components/ProductDetails';
+import {ProductsAdd} from './Components/ProductsAdd';
 import {ProducersAdd} from './Components/ProducersAdd';
 import {ProducersList} from './Components/ProducersList';
 import {CategoriesList} from './Components/CategoriesList';
@@ -16,6 +18,8 @@ export default (
     <React.Fragment>
         <Route exact path="/" component={Main} myname={"Main page"}/>
         <Route path="/products" component={ProductsList}/>
+        <Route path="/products/:id" component={ProductDetails}/>
+        <Route path="/products/add" component={ProductsAdd}/>
         <Route path="/producers" component={ProducersList}/>
         <Route path="/producers/add" component={ProducersAdd}/>
         <Route path="/categories" component={CategoriesList}/>
