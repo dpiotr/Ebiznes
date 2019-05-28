@@ -11,8 +11,16 @@ import {CategoriesAdd} from './Components/CategoriesAdd';
 import {CountriesList} from './Components/CountriesList';
 import {CountriesAdd} from './Components/CountriesAdd';
 import {PhotosList} from './Components/PhotosList';
+import {PhotosAdd} from './Components/PhotosAdd';
 import {ClientsList} from './Components/ClientsList';
+import {ClientDetails} from './Components/ClientDetails';
+import {ClientsAddressesList} from './Components/ClientsAddressesList';
+import {ClientsOrdersList} from './Components/ClientsOrdersList';
+import {AccountsAdd} from './Components/AccountsAdd';
 import {AccountsList} from './Components/AccountsList';
+import {DepotList} from './Components/DepotList';
+import {DepotAdd} from './Components/DepotAdd';
+import {OrderAdd} from './Components/OrderAdd';
 
 export default (
     <React.Fragment>
@@ -27,7 +35,15 @@ export default (
         <Route path="/countries" component={CountriesList}/>
         <Route path="/countries/add" component={CountriesAdd}/>
         <Route path="/photos" component={PhotosList}/>
+        <Route path="/photos/add" component={PhotosAdd}/>
         <Route path="/accounts" component={AccountsList}/>
+        <Route path="/accounts/add" component={AccountsAdd}/>
         <Route path="/clients" component={ClientsList}/>
+        <Route path="/clients/:id" component={ClientDetails}/>
+        <Route path="/clients/:id/addresses" component={ClientsAddressesList}/>
+        <Route path="/clients/:id/orders" component={ClientsOrdersList}/>
+        <Route path="/depot" component={DepotList}/>
+        <Route path="/depot/add" component={DepotAdd}/>
+        <Route path="/order/add" component={OrderAdd}/>
     </React.Fragment>
 );

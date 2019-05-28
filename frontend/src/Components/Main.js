@@ -19,8 +19,13 @@ export const Main = props => {
                     <li><NavLink to="/countries">Countries</NavLink></li>
                     <li><NavLink to="/countries/add">Add Country</NavLink></li>
                     <li><NavLink to="/photos">Photos</NavLink></li>
-                    <li><NavLink to="/accounts">Administration Accounts</NavLink></li>
-                    <li><NavLink to="/clients">Administration Clients</NavLink></li>
+                    <li><NavLink to="/photos/add">Photo Add</NavLink></li>
+                    <li><NavLink to="/accounts">Accounts</NavLink></li>
+                    <li><NavLink to="/clients/add">Account Add</NavLink></li>
+                    <li><NavLink to="/clients">Clients</NavLink></li>
+                    <li><NavLink to="/depot">Depot</NavLink></li>
+                    <li><NavLink to="/depot/add">Add Depot</NavLink></li>
+                    <li><NavLink to="/order/add">Add Order</NavLink></li>
                 </ul>
             </nav>
         </React.Fragment>

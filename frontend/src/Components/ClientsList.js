@@ -48,7 +48,6 @@ export class ClientsList extends Component {
 
         for (let i = 0; i < this.state.clients.length; i++) {
             let client = this.state.clients[i];
-            console.log(client);
 
             clientsTable.push(
                 <tr>
@@ -56,6 +55,9 @@ export class ClientsList extends Component {
                     <td>{client.surname}</td>
                     <td>{client.telephone}</td>
                     <td>{client.email}</td>
+                    <td><a href={"/clients/" + client.id}>Szczegóły</a></td>
+                    <td><a href={"/clients/" + client.id + "/addresses"}>Adresy</a></td>
+                    <td><a href={"/clients/" + client.id + "/orders"}>Zamówienia</a></td>
                 </tr>
             );
         }
