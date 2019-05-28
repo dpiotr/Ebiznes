@@ -21,13 +21,15 @@ class OrderRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, va
 
     def id_address = column[Int]("id_address")
 
+    def date = column[String]("date")
+
     def is_done = column[Int]("is_done")
 
     def fk_client = foreignKey("fk_client", id_client, clientTable)(_.id)
 
     def fk_address = foreignKey("fk_address", id_address, addressTable)(_.id)
 
-    def * = (id, id_client, id_address, is_done) <> ((Order.apply _).tupled, Order.unapply)
+    def * = (id, id_client, id_address, date, is_done) <> ((Order.apply _).tupled, Order.unapply)
   }
 
   import clientRepository.ClientTable
@@ -38,11 +40,11 @@ class OrderRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, va
 
   val order = TableQuery[OrderTable]
 
-  def create(id_client: Int, id_address: Int, is_done: Int): Future[Order] = db.run {
-    (order.map(o => (o.id_client, o.id_address, o.is_done))
+  def create(id_client: Int, id_address: Int, date: String, is_done: Int): Future[Order] = db.run {
+    (order.map(o => (o.id_client, o.id_address, o.date, o.is_done))
       returning order.map(_.id)
-      into { case ((id_client, id_address, is_done), id) => Order(id, id_client, id_address, is_done) }
-      ) += (id_client, id_address, is_done)
+      into { case ((id_client, id_address, date, is_done), id) => Order(id, id_client, id_address, date, is_done) }
+      ) += (id_client, id_address, date, is_done)
   }
 
   def list(): Future[Seq[Order]] = db.run {
@@ -62,8 +64,8 @@ class OrderRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, va
       .delete
   }
 
-  def edit(id: Int, id_client: Int, id_address: Int, is_done: Int) = db.run {
-    val updateOrder = Order(id, id_client, id_address, is_done)
+  def edit(id: Int, id_client: Int, id_address: Int, date: String, is_done: Int) = db.run {
+    val updateOrder = Order(id, id_client, id_address, date, is_done)
 
     order
       .filter(_.id === id)

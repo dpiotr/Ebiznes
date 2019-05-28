@@ -6,7 +6,7 @@ case class Order(
                   id: Int,
                   id_client: Int,
                   id_address: Int,
-                  //                    date: Date,
+                  date: String,
                   is_done: Int
                 )
 

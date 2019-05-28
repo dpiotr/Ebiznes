@@ -63,7 +63,7 @@ POST          /client/:id/addresses/add                      controllers.ClientC
 DELETE        /client/:id/addresses/:addressId/remove        controllers.ClientController.addressRemove(id: Int, addressId: Int)
 PATCH         /client/:id/addresses/:addressId/edit          controllers.ClientController.addressEdit(id: Int, addressId: Int)
 GET           /client/:id/orders                             controllers.ClientController.orders(id: Int)
-#GET           /administration/clients                        controllers.ClientController.clients
+GET           /administration/clients                        controllers.ClientController.clients
 #DELETE        /administration/clients/:id/remove             controllers.ClientController.clients
 #PATCH         /administration/clients/:id/edit               controllers.ClientController.clients
 

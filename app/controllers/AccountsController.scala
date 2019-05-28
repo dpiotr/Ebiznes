@@ -2,10 +2,10 @@ package controllers
 
 import javax.inject._
 import models._
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 import play.api.mvc._
 
-import scala.concurrent.{ExecutionContext}
+import scala.concurrent.ExecutionContext
 
 @Singleton
 class AccountsController @Inject()(accountRepo: AccountRepository, cc: MessagesControllerComponents)(implicit ec: ExecutionContext) extends MessagesAbstractController(cc) {
@@ -19,8 +19,10 @@ class AccountsController @Inject()(accountRepo: AccountRepository, cc: MessagesC
   }
 
   def add = Action.async { implicit request =>
-    val login = request.body.asJson.get("login").as[String]
-    val password = request.body.asJson.get("password").as[String]
+    val account: JsObject = request.body.asJson.get("account").as[JsObject]
+
+    val login = account.value("name").as[String]
+    val password = account.value("password").as[String]
 
     accountRepo
       .create(login, password)

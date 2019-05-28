@@ -3,7 +3,7 @@ package controllers
 import javax.inject._
 import models.PhotoRepository
 import play.api.mvc._
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 
 import scala.concurrent.ExecutionContext
 
@@ -19,7 +19,9 @@ class PhotosController @Inject()(photoRepo: PhotoRepository, cc: MessagesControl
   }
 
   def add = Action.async { implicit request =>
-    val name = request.body.asJson.get("name").as[String]
+    val photo: JsObject = request.body.asJson.get("photo").as[JsObject]
+
+    val name = photo.value("name").as[String]
 
     photoRepo
       .create(name)
