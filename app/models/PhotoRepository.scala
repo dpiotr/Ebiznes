@@ -16,7 +16,7 @@ class PhotoRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(implic
   class PhotoTable(tag: Tag) extends Table[Photo](tag, "Photo") {
     def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
 
-    def name = column[String]("name")
+    def name = column[String]("data")
 
     def * = (id, name) <> ((Photo.apply _).tupled, Photo.unapply)
   }
